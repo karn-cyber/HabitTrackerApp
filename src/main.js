@@ -1,4 +1,9 @@
 import './style.css'
+import { initPayment } from './payment.js'
+
+// Initialize Payment
+initPayment();
+
 
 // FAQ Accordion
 const faqItems = document.querySelectorAll('.faq-item');
