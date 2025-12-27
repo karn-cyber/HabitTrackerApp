@@ -11,7 +11,7 @@ export function initPayment() {
 
     const options = {
         "key": razorpayKey,
-        "amount": "1900", // 1900 paise = ₹19 INR
+        "amount": "1", // 1900 paise = ₹19 INR
         "currency": "INR",
         "name": "Student Habit Tracker",
         "description": "Personal editable habit tracker for students",
