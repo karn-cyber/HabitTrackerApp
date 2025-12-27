@@ -406,11 +406,21 @@ button {
 }
 
 .secondary-mockup {
-    height: 400px;
-    background-color: white;
-    box-shadow: var(--shadow-xl);
+    /* Deprecated */
+    display: none;
+}
+
+.solution-img {
+    width: 100%;
+    height: auto;
     border-radius: 12px;
+    box-shadow: var(--shadow-xl);
     border: 1px solid var(--border-color);
+    transition: transform var(--transition-smooth);
+}
+
+.solution-img:hover {
+    transform: scale(1.02);
 }
 
 /* Features */
