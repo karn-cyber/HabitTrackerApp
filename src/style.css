@@ -606,46 +606,88 @@ button {
     transform: rotate(45deg);
 }
 
-/* Footer */
+/* Feature Icon Styles */
+.feature-icon {
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+}
+
+.text-green {
+    color: #10b981;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+
+.icon-box i {
+    width: 24px;
+    height: 24px;
+}
+
+/* Footer Improvements */
 .footer {
-    background-color: var(--text-main);
-    color: white;
-    padding: 4rem 0 2rem 0;
+    padding: 4rem 1rem 2rem;
+    border-top: 1px solid #e5e7eb;
+    background-color: var(--bg-secondary);
+    color: var(--text-main);
 }
 
 .footer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
     margin-bottom: 3rem;
+    text-align: left;
     padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid #e5e7eb;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 .footer-brand h3 {
     margin-bottom: 0.5rem;
-}
-
-.footer-brand p {
-    color: #9ca3af;
+    color: var(--text-color);
 }
 
 .footer-links {
     display: flex;
-    gap: 2rem;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .footer-links a {
-    color: #d1d5db;
+    color: var(--text-light);
+    transition: color 0.3s;
 }
 
 .footer-links a:hover {
-    color: white;
+    color: var(--primary-color);
 }
 
-.footer-bottom p {
-    color: #6b7280;
-    font-size: 0.875rem;
+/* Genuine Feel Polish */
+.btn {
+    box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+}
+
+.btn:hover {
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+}
+
+.card,
+.feature-item,
+.step-card {
+    border: 1px solid #f3f4f6;
+}
+
+.div.avatar {
+    /* Deprecated placeholder style override if any left */
 }
 
 /* Responsive */

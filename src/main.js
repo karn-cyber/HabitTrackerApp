@@ -1,8 +1,16 @@
 import './style.css'
 import { initPayment } from './payment.js'
+import { createIcons, TrendingDown, Puzzle, SmartphoneOff, CheckCircle, Calendar, BarChart2, Flame, CalendarDays, Palette, FileSpreadsheet } from 'lucide';
 
 // Initialize Payment
 initPayment();
+
+// Initialize Icons
+createIcons({
+    icons: {
+        TrendingDown, Puzzle, SmartphoneOff, CheckCircle, Calendar, BarChart2, Flame, CalendarDays, Palette, FileSpreadsheet
+    }
+});
 
 
 // FAQ Accordion
