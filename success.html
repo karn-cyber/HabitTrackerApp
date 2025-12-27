@@ -34,19 +34,18 @@
             max-width: 500px;
         }
 
-        .icon-success {
-            color: #10b981;
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
         h1 {
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-main);
         }
 
         p {
             color: #6b7280;
             margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.5;
         }
 
         .btn {
@@ -58,19 +57,21 @@
             border-radius: 8px;
             font-weight: 600;
             transition: transform 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="icon-success">🎉</div>
-        <h1>Payment Successful!</h1>
-        <p>Thank you for your purchase. You can now access your personal copy of the Habit Tracker.</p>
+        <h1>Payment Successful 🎉</h1>
+        <p>Thank you for your purchase!<br><br>Click the button below to get your personal editable copy of the Habit
+            Tracker.</p>
         <a href="https://docs.google.com/spreadsheets/d/1dLLUnOkYfOGctu_v8IDaZvAiJGT6W5Voo8ch30SYa7M/copy"
             class="btn">Get Your Personal Copy</a>
     </div>

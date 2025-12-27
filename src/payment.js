@@ -11,15 +11,16 @@ export function initPayment() {
 
     const options = {
         "key": razorpayKey,
-        "amount": "1900", // 1900 paise = ₹19 INR
+        "amount": "100", // 100 paise = ₹1 INR (Test Mode)
         "currency": "INR",
         "name": "Student Habit Tracker",
-        "description": "Lifetime Access to Excel Dashboard",
+        "description": "Personal editable habit tracker for students",
         "image": "/dashboard-mockup.png",
         "handler": function (response) {
             window.location.href = "/success.html";
         },
         "prefill": {
+            // Leave empty to let Razorpay collect email/phone
             "name": "",
             "email": "",
             "contact": ""
