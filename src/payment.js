@@ -9,6 +9,33 @@ export function initPayment() {
         return;
     }
 
+    // Check if user has already paid
+    const hasPaid = localStorage.getItem('hasPaid');
+    const paymentButtons = document.querySelectorAll('a[href="#pricing"], .btn-primary');
+    const googleSheetLink = "https://docs.google.com/spreadsheets/d/1dLLUnOkYfOGctu_v8IDaZvAiJGT6W5Voo8ch30SYa7M/copy";
+
+    if (hasPaid === 'true') {
+        paymentButtons.forEach(btn => {
+            if (btn.textContent.includes('Get') || btn.textContent.includes('Buy')) {
+                btn.textContent = "Access Your Copy"; // Change text
+                // Remove href javascript call and set real link
+                if (btn.tagName === 'A') {
+                    btn.removeAttribute('href');
+                    btn.href = googleSheetLink;
+                    btn.target = "_blank"; // Open in new tab
+                } else {
+                    // If it's a button, we need a click listener to redirect
+                    btn.onclick = () => window.open(googleSheetLink, '_blank');
+                }
+
+                // Clone element to remove existing event listeners (the razorpay ones added below if we ran that code)
+                // But better yet, we just return early so those listeners are never attached!
+            }
+        });
+        console.log("User has paid. Access granted.");
+        return; // EXIT FUNCTION EARLY
+    }
+
     const options = {
         "key": razorpayKey,
         "amount": "1900", // 1900 paise = ₹19 INR
@@ -17,6 +44,7 @@ export function initPayment() {
         "description": "Personal editable habit tracker for students",
         "image": "/dashboard-mockup.png",
         "handler": function (response) {
+            localStorage.setItem('hasPaid', 'true');
             window.location.href = "/success.html";
         },
         "prefill": {
@@ -45,7 +73,7 @@ export function initPayment() {
         document.body.appendChild(script);
     }
 
-    const paymentButtons = document.querySelectorAll('a[href="#pricing"], .btn-primary');
+    // paymentButtons defined above
     console.log("Found payment buttons:", paymentButtons.length);
 
     paymentButtons.forEach(btn => {
