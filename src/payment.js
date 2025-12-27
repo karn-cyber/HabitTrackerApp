@@ -30,22 +30,25 @@ export function initPayment() {
         }
     };
 
+    if (!window.Razorpay) {
+        console.error("Razorpay SDK not loaded");
+        return;
+    }
+
     const paymentButtons = document.querySelectorAll('a[href="#pricing"], .btn-primary');
 
     paymentButtons.forEach(btn => {
-        // Only bind to buttons that are actual purchase buttons or pricing links
-        // We filter slightly to avoid navigation links if they point to sections vs actions
-        // But for simplicity, let's target specific CTA buttons
-
-        // Let's assume all buttons with text "Get the Habit Tracker" or similar should trigger it.
-        // Or we simply check if it's the specific CTA. 
-        // The user said: "Get the Habit Tracker" button should open modal.
-
+        // Filter for specific CTA keywords
         if (btn.textContent.includes('Get') || btn.textContent.includes('Buy')) {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                const rzp1 = new Razorpay(options);
-                rzp1.open();
+                try {
+                    const rzp1 = new window.Razorpay(options);
+                    rzp1.open();
+                } catch (error) {
+                    console.error("Razorpay Initialization Failed:", error);
+                    alert("Payment gateway failed to open. Please try again or check console.");
+                }
             });
         }
     });
