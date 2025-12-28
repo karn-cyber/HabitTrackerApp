@@ -112,4 +112,38 @@ export function initPayment() {
             rzp.open();
         });
     });
+
+    // Promo Code Logic
+    const promoLink = document.getElementById('promo-trigger');
+    if (promoLink) {
+        promoLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const code = prompt("Enter your promo code:");
+
+            if (code && code.toUpperCase() === 'FRND49') {
+                // Check Expiration (Dec 31st 2025)
+                // Months are 0-indexed in JS (Dec is 11)
+                const expiryDate = new Date('2026-01-01'); // Expire at start of 2026
+                const now = new Date();
+
+                if (now < expiryDate) {
+                    alert("Promo code applied! You have free access.");
+
+                    // Grant access to everything
+                    const products = ['habit', 'finance', 'bundle'];
+                    localStorage.setItem('ownedProducts', JSON.stringify(products));
+
+                    // Set secure token
+                    sessionStorage.setItem('secure_access_token', 'valid');
+
+                    // Redirect to success
+                    window.location.href = "/success.html?product=bundle&auth=verified";
+                } else {
+                    alert("This promo code has expired.");
+                }
+            } else if (code) {
+                alert("Invalid promo code.");
+            }
+        });
+    }
 }
