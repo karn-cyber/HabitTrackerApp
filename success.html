@@ -143,12 +143,17 @@
 
     <script>
         // Security Check: Redirect if direct access without payment token
-        // We check for URL param 'auth=verified' OR sessionStorage (fallback)
+        // Valid proofs:
+        // 1. URL param 'auth=verified' (New purchase)
+        // 2. sessionStorage 'secure_access_token' (Session fallback)
+        // 3. localStorage 'ownedProducts' (Returning customer)
+
         const urlParams = new URLSearchParams(window.location.search);
         const hasAuthToken = urlParams.get('auth') === 'verified';
         const hasSessionToken = sessionStorage.getItem('secure_access_token');
+        const hasOwnership = localStorage.getItem('ownedProducts'); // Check if they own anything
 
-        if (!hasAuthToken && !hasSessionToken) {
+        if (!hasAuthToken && !hasSessionToken && !hasOwnership) {
             window.location.href = '/';
         }
 
