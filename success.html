@@ -64,17 +64,120 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
+
+        .success-container {
+            padding: 2rem;
+            max-width: 500px;
+            background-color: var(--bg-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-container h1 {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        .success-container p {
+            color: #6b7280;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+
+        .download-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #4f46e5;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Payment Successful 🎉</h1>
-        <p>Thank you for your purchase!<br><br>Click the button below to get your personal editable copy of the Habit
-            Tracker.</p>
-        <a href="https://docs.google.com/spreadsheets/d/1dLLUnOkYfOGctu_v8IDaZvAiJGT6W5Voo8ch30SYa7M/copy"
-            class="btn">Get Your Personal Copy</a>
+    <div class="success-container">
+        <div class="success-icon">🎉</div>
+        <h1>Payment Successful!</h1>
+        <p>Thank you for your purchase. Click the buttons below to create your personal copies in Google Drive.</p>
+
+        <div id="download-section" class="download-buttons">
+            <!-- Buttons injected via JS -->
+        </div>
+
+        <a href="/" class="back-link">Return to Home</a>
     </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const product = params.get('product'); // 'habit', 'finance', 'bundle'
+
+        const container = document.getElementById('download-section');
+        const links = {
+            'habit': {
+                url: "https://docs.google.com/spreadsheets/d/1dLLUnOkYfOGctu_v8IDaZvAiJGT6W5Voo8ch30SYa7M/copy",
+                text: "Get Habit Tracker"
+            },
+            'finance': {
+                url: "https://docs.google.com/spreadsheets/d/1qe5r_Hd8Cg31Vgl21r38byKkSUd-Lv4mHnAHg1E5zXg/copy",
+                text: "Get Finance Tracker"
+            }
+        };
+
+        function createButton(key) {
+            const data = links[key];
+            if (!data) return;
+            const btn = document.createElement('a');
+            btn.href = data.url;
+            btn.className = 'download-btn';
+            btn.target = '_blank';
+            btn.textContent = data.text;
+            container.appendChild(btn);
+        }
+
+        if (product === 'bundle') {
+            createButton('finance');
+            createButton('habit');
+        } else if (product && links[product]) {
+            createButton(product);
+        } else {
+            // Fallback or default
+            createButton('habit');
+        }
+    </script>
 </body>
 
 </html>

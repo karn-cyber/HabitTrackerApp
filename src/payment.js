@@ -4,100 +4,108 @@ export function initPayment() {
     const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
     if (!razorpayKey) {
-        console.error("Razorpay Key ID is missing in environment variables.");
-        alert("Configuration Error: VITE_RAZORPAY_KEY_ID is missing. Please check your .env file and restart the server.");
+        console.error("Razorpay Key ID is missing.");
+        alert("Configuration Error: VITE_RAZORPAY_KEY_ID is missing.");
         return;
     }
 
-    // Check if user has already paid
-    const hasPaid = localStorage.getItem('hasPaid');
-    const paymentButtons = document.querySelectorAll('a[href="#pricing"], .btn-primary');
-    const googleSheetLink = "https://docs.google.com/spreadsheets/d/1dLLUnOkYfOGctu_v8IDaZvAiJGT6W5Voo8ch30SYa7M/copy";
-
-    if (hasPaid === 'true') {
-        paymentButtons.forEach(btn => {
-            if (btn.textContent.includes('Get') || btn.textContent.includes('Buy')) {
-                btn.textContent = "Access Your Copy"; // Change text
-                // Remove href javascript call and set real link
-                if (btn.tagName === 'A') {
-                    btn.removeAttribute('href');
-                    btn.href = googleSheetLink;
-                    btn.target = "_blank"; // Open in new tab
-                } else {
-                    // If it's a button, we need a click listener to redirect
-                    btn.onclick = () => window.open(googleSheetLink, '_blank');
-                }
-
-                // Clone element to remove existing event listeners (the razorpay ones added below if we ran that code)
-                // But better yet, we just return early so those listeners are never attached!
-            }
-        });
-        console.log("User has paid. Access granted.");
-        return; // EXIT FUNCTION EARLY
-    }
-
-    const options = {
-        "key": razorpayKey,
-        "amount": "1900", // 1900 paise = ₹19 INR
-        "currency": "INR",
-        "name": "Student Habit Tracker",
-        "description": "Personal editable habit tracker for students",
-        "image": "/dashboard-mockup.png",
-        "handler": function (response) {
-            localStorage.setItem('hasPaid', 'true');
-            window.location.href = "/success.html";
-        },
-        "prefill": {
-            // Leave empty to let Razorpay collect email/phone
-            "name": "",
-            "email": "",
-            "contact": ""
-        },
-        "theme": {
-            "color": "#6366f1"
-        },
-        "modal": {
-            "ondismiss": function () {
-                console.log('Checkout form closed');
-            }
-        }
-    };
-
+    // Load Razorpay Script if missing
     if (!window.Razorpay) {
-        console.error("Razorpay SDK not loaded");
-        // Try to load it dynamically if missing
         const script = document.createElement('script');
         script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-        script.onload = () => console.log('Razorpay SDK loaded dynamically');
-        script.onerror = () => alert('Failed to load payment gateway. Please check your internet connection.');
+        script.onload = () => console.log('Razorpay SDK loaded');
+        script.onerror = () => alert('Failed to load payment gateway.');
         document.body.appendChild(script);
     }
 
-    // paymentButtons defined above
-    console.log("Found payment buttons:", paymentButtons.length);
+    // Logic: "ownedProducts" is a JSON array of strings: ['habit', 'finance', 'bundle']
+    let ownedProducts = [];
+    try {
+        ownedProducts = JSON.parse(localStorage.getItem('ownedProducts') || '[]');
+        if (!Array.isArray(ownedProducts)) ownedProducts = [];
+    } catch (e) {
+        ownedProducts = [];
+    }
 
-    paymentButtons.forEach(btn => {
-        if (btn.textContent.includes('Get') || btn.textContent.includes('Buy')) {
-            // Remove any existing href to prevent navigation if JS fails or loading is slow
-            if (btn.tagName === 'A') btn.setAttribute('href', 'javascript:void(0)');
+    // Legacy support: if 'hasPaid' exists, assume they own 'habit' (old version)
+    if (localStorage.getItem('hasPaid') === 'true' && !ownedProducts.includes('habit')) {
+        ownedProducts.push('habit');
+        localStorage.setItem('ownedProducts', JSON.stringify(ownedProducts));
+    }
 
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log("Buy button clicked");
+    // Product Links
+    const links = {
+        'habit': "https://docs.google.com/spreadsheets/d/1dLLUnOkYfOGctu_v8IDaZvAiJGT6W5Voo8ch30SYa7M/copy",
+        'finance': "https://docs.google.com/spreadsheets/d/1qe5r_Hd8Cg31Vgl21r38byKkSUd-Lv4mHnAHg1E5zXg/copy", // Provided by user
+        'bundle': null // Bundle doesn't have a single link, it unlocks both
+    };
 
-                if (!window.Razorpay) {
-                    alert("Payment Gateway is still loading... please wait a moment and try again.");
-                    return;
-                }
+    // Helper: Mark button as owned
+    const markOwned = (btn, product) => {
+        btn.textContent = "Access Now";
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary'); // Visual indicator
+        btn.onclick = (e) => {
+            e.preventDefault();
+            if (product === 'bundle') {
+                // For bundle button in UI, maybe redirect to a page with both links or just open one? 
+                // Requirement says "Access Your Copy" - simpler to just redirect to success page which lists both
+                window.location.href = "/success.html?product=bundle";
+            } else {
+                window.open(links[product], '_blank');
+            }
+        };
+    };
 
-                try {
-                    const rzp1 = new window.Razorpay(options);
-                    rzp1.open();
-                } catch (error) {
-                    console.error("Razorpay Initialization Failed:", error);
-                    alert("Payment gateway failed to open. Error: " + error.message);
-                }
-            });
+    const buyButtons = document.querySelectorAll('.buy-btn');
+
+    buyButtons.forEach(btn => {
+        const product = btn.dataset.product; // 'habit', 'finance', 'bundle'
+        const amount = btn.dataset.amount;   // '3800', '5000'
+
+        // Check ownership
+        const isOwned = ownedProducts.includes(product) || (product !== 'bundle' && ownedProducts.includes('bundle')); // owning bundle implies owning components
+
+        if (isOwned) {
+            markOwned(btn, product);
+            return;
         }
+
+        // Attach Click Listener for Payment
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if (!window.Razorpay) {
+                alert("Payment gateway loading... try again.");
+                return;
+            }
+
+            const options = {
+                "key": razorpayKey,
+                "amount": amount,
+                "currency": "INR",
+                "name": "MoneyOS",
+                "description": product === 'bundle' ? "Finance + Habit Tracker Bundle" : `${product.charAt(0).toUpperCase() + product.slice(1)} Tracker`,
+                "image": "/logo.png", // Use logo
+                "handler": function (response) {
+                    // Update Local Storage
+                    const currentOwned = JSON.parse(localStorage.getItem('ownedProducts') || '[]');
+                    if (!currentOwned.includes(product)) {
+                        currentOwned.push(product);
+                        localStorage.setItem('ownedProducts', JSON.stringify(currentOwned));
+                    }
+                    // Redirect
+                    window.location.href = `/success.html?product=${product}`;
+                },
+                "prefill": { "email": "" },
+                "theme": { "color": "#6366f1" }
+            };
+
+            const rzp = new window.Razorpay(options);
+            rzp.on('payment.failed', function (response) {
+                alert("Payment Failed: " + response.error.description);
+            });
+            rzp.open();
+        });
     });
 }

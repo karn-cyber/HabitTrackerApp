@@ -426,6 +426,12 @@ button {
     transform: scale(1.02);
 }
 
+.strike {
+    text-decoration: line-through;
+    opacity: 0.7;
+    margin-right: 8px;
+}
+
 /* Features */
 .features-section {
     background-color: white;
@@ -486,17 +492,43 @@ button {
     padding-bottom: 8rem;
 }
 
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    align-items: center;
+    /* Vertically align for the featured card pop */
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
 .pricing-card {
     background: white;
     border: 1px solid var(--border-color);
     border-radius: 16px;
-    padding: 3rem 2rem;
-    max-width: 480px;
-    margin: 0 auto;
+    padding: 2rem;
     position: relative;
     box-shadow: var(--shadow-xl);
-    overflow: hidden;
+    transition: transform var(--transition-fast);
 }
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+}
+
+.featured-card {
+    border: 2px solid var(--primary-color);
+    transform: scale(1.05);
+    /* Slight pop */
+    z-index: 2;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.featured-card:hover {
+    transform: scale(1.05) translateY(-5px);
+}
+
 
 .popular-tag {
     position: absolute;
