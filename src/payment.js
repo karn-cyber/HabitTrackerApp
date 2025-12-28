@@ -94,6 +94,10 @@ export function initPayment() {
                         currentOwned.push(product);
                         localStorage.setItem('ownedProducts', JSON.stringify(currentOwned));
                     }
+
+                    // Set Security Token for Success Page access
+                    sessionStorage.setItem('secure_access_token', 'valid');
+
                     // Redirect
                     window.location.href = `/success.html?product=${product}`;
                 },
