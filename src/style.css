@@ -475,10 +475,90 @@ button {
     font-size: 0.95rem;
 }
 
+/* Testimonials Marquee */
+.testimonials-section {
+    background-color: #fafbfc;
+    padding-bottom: 4rem;
+    overflow: hidden;
+    /* Hide overflow from marquee */
+}
+
+.marquee-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.marquee-row {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+}
+
+.scroll-left {
+    animation: scrollLegit 40s linear infinite;
+}
+
+.scroll-right {
+    animation: scrollLegitReverse 40s linear infinite;
+}
+
+@keyframes scrollLegit {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes scrollLegitReverse {
+    0% {
+        transform: translateX(-50%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.review-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.review-text {
+    font-style: italic;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.review-author {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align: right;
+}
+
+/* Pause animation on hover for better UX */
+.marquee-row:hover {
+    animation-play-state: paused;
+}
+
 /* How It Works */
 .steps-section {
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-color);
+    /* Changed from secondary to main to contrast with testimonials */
 }
+
 
 .steps-grid {
     display: grid;
