@@ -95,11 +95,11 @@ export function initPayment() {
                         localStorage.setItem('ownedProducts', JSON.stringify(currentOwned));
                     }
 
-                    // Set Security Token for Success Page access
+                    // Set Security Token for Success Page access (Backup)
                     sessionStorage.setItem('secure_access_token', 'valid');
 
-                    // Redirect
-                    window.location.href = `/success.html?product=${product}`;
+                    // Redirect with URL token (Primary method)
+                    window.location.href = `/success.html?product=${product}&auth=verified`;
                 },
                 "prefill": { "email": "" },
                 "theme": { "color": "#6366f1" }

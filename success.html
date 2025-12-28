@@ -143,8 +143,12 @@
 
     <script>
         // Security Check: Redirect if direct access without payment token
-        // We verify the sessionStorage token set by payment.js
-        if (!sessionStorage.getItem('secure_access_token')) {
+        // We check for URL param 'auth=verified' OR sessionStorage (fallback)
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasAuthToken = urlParams.get('auth') === 'verified';
+        const hasSessionToken = sessionStorage.getItem('secure_access_token');
+
+        if (!hasAuthToken && !hasSessionToken) {
             window.location.href = '/';
         }
 
