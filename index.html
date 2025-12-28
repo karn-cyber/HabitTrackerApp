@@ -517,6 +517,22 @@
             </div>
         </footer>
     </div>
+    <!-- Promo Code Modal -->
+    <div id="promo-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <h3>Unlock Friend Access</h3>
+                <p>Enter your exclusive code to unlock the full bundle for free.</p>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="promo-input" placeholder="Enter valid code" autocomplete="off">
+                <p id="promo-error" class="error-text hidden">Invalid code. Please try again.</p>
+                <button id="apply-promo-btn" class="btn btn-primary btn-block">Unlock Access</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script type="module" src="/src/main.js"></script>
 </body>

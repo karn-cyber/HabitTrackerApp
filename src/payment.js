@@ -113,37 +113,72 @@ export function initPayment() {
         });
     });
 
-    // Promo Code Logic
+    // Promo Code Logic (Modal)
     const promoLink = document.getElementById('promo-trigger');
-    if (promoLink) {
+    const modal = document.getElementById('promo-modal');
+    const closeBtn = document.querySelector('.modal-close');
+    const applyBtn = document.getElementById('apply-promo-btn');
+    const input = document.getElementById('promo-input');
+    const errorMsg = document.getElementById('promo-error');
+
+    // Open Modal
+    if (promoLink && modal) {
         promoLink.addEventListener('click', (e) => {
             e.preventDefault();
-            const code = prompt("Enter your promo code:");
+            modal.classList.remove('hidden');
+            input.value = ''; // Reset
+            errorMsg.classList.add('hidden');
+            input.focus();
+        });
+
+        // Close Modal
+        const closeModal = () => {
+            modal.classList.add('hidden');
+        };
+
+        closeBtn.addEventListener('click', closeModal);
+
+        // Close on click outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Apply Logic
+        applyBtn.addEventListener('click', () => {
+            const code = input.value.trim();
 
             if (code && code.toUpperCase() === 'FRND49') {
-                // Check Expiration (Dec 31st 2025)
-                // Months are 0-indexed in JS (Dec is 11)
-                const expiryDate = new Date('2026-01-01'); // Expire at start of 2026
+                const expiryDate = new Date('2026-01-01');
                 const now = new Date();
 
                 if (now < expiryDate) {
-                    alert("Promo code applied! You have free access.");
-
-                    // Grant access to everything
+                    // Success
                     const products = ['habit', 'finance', 'bundle'];
                     localStorage.setItem('ownedProducts', JSON.stringify(products));
-
-                    // Set secure token
                     sessionStorage.setItem('secure_access_token', 'valid');
 
-                    // Redirect to success
-                    window.location.href = "/success.html?product=bundle&auth=verified";
+                    // Visual feedback before redirect
+                    applyBtn.textContent = "Unlocked! Redirecting...";
+                    applyBtn.style.backgroundColor = "#10b981"; // Green
+
+                    setTimeout(() => {
+                        window.location.href = "/success.html?product=bundle&auth=verified";
+                    }, 1000);
                 } else {
-                    alert("This promo code has expired.");
+                    // Expired
+                    errorMsg.textContent = "This promo code has expired.";
+                    errorMsg.classList.remove('hidden');
                 }
-            } else if (code) {
-                alert("Invalid promo code.");
+            } else {
+                // Invalid
+                errorMsg.textContent = "Invalid code. Please try again.";
+                errorMsg.classList.remove('hidden');
             }
+        });
+
+        // Enter key support
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') applyBtn.click();
         });
     }
 }
