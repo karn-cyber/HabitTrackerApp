@@ -36,8 +36,33 @@ export function initPayment() {
     // Product Links
     const links = {
         'habit': "https://docs.google.com/spreadsheets/d/1dLLUnOkYfOGctu_v8IDaZvAiJGT6W5Voo8ch30SYa7M/copy",
-        'finance': "https://docs.google.com/spreadsheets/d/1qe5r_Hd8Cg31Vgl21r38byKkSUd-Lv4mHnAHg1E5zXg/copy", // Provided by user
-        'bundle': null // Bundle doesn't have a single link, it unlocks both
+        'finance': "https://docs.google.com/spreadsheets/d/1qe5r_Hd8Cg31Vgl21r38byKkSUd-Lv4mHnAHg1E5zXg/copy",
+        'bundle': null, // Bundle doesn't have a single link, it unlocks both
+        'ai-videos': "https://drive.google.com/drive/folders/1qBpqgApYwv86vNhsqKhJume2NNo_Qg9V",
+        // AI Video Bundles (23 products)
+        'glass-cutting-bundle': "https://drive.google.com/drive/folders/1AnfaT-CsqJI8h1RPLaqqco38TiPLlBCY",
+        'ai-story-bundle': "https://drive.google.com/drive/folders/1kocgFg0rzsMCtXsrWiOH_oditWshBpbV",
+        'patal-lok-bundle': "https://drive.google.com/drive/folders/1UePgbkbTlAKFbBAMqcXi9l34XFkUzFjF",
+        'anime-reels-bundle': "https://drive.google.com/drive/folders/1vAkSCfTcXPen5pDkwMgUmbAOqGQZxfwF",
+        'motivational-reels-bundle': "https://drive.google.com/drive/mobile/folders/1FJbKCNvBiujwgnbNmVnaaXs7lEokvNXT",
+        'luxury-reels-bundle': "https://drive.google.com/drive/folders/13nXuzXZmz_d7Yt0DQbBwmyInw-0RS-Zz",
+        'car-edits-bundle': "https://drive.google.com/drive/folders/1ev4YgEAw55izgE5mO6NTe0fswrrQTTva",
+        'cars-reels-bundle': "https://drive.google.com/drive/folders/1hpwetf4zqIs1Yt0R0g8dBREDJ_oN61oW",
+        '2d-animation-bundle': "https://drive.google.com/drive/folders/1sJmwRYH5l4fyGQaUPJ1MfvwwJT5PkL4h",
+        'sigma-male-bundle': "https://drive.google.com/drive/folders/1-20KuM_Q8N41AZ3urB9OIsE4RwEqg33o",
+        'movie-explain-bundle': "https://drive.google.com/drive/folders/1dVjqB7m_IKHIZ2-PN8PmNiXhC4jRVFbU",
+        'cartoon-explain-bundle': "https://drive.google.com/drive/folders/1dHDKZe6HIDnDpX4jXMfow3VEXYxRJgY5",
+        '30k-viral-bundle': "https://drive.google.com/drive/folders/1qBpqgApYwv86vNhsqKhJume2NNo_Qg9V",
+        'satisfying-reels-bundle': "https://drive.google.com/drive/folders/1jzhyjsiKPRWJSZZSsasz4qq8Kq9qapV5",
+        'gym-reels-bundle': "https://drive.google.com/drive/folders/1jesQ7V_duScTQ9W02bCPsvc8ffXSabxP",
+        'marvelous-ai-bundle': "https://drive.google.com/drive/folders/120aMEClKKFz4ErXaj7wrfYlANtDPjj_T",
+        'glowing-graphics-bundle': "https://drive.google.com/drive/folders/1roblnDQyKDbkJscGsTSTEglAJc-50RYM",
+        'sanatan-ai-bundle': "https://drive.google.com/drive/folders/15qei5cdB_Z0UAMNPj9_2uPmSzg8kh8cW",
+        'ai-reel-bundle': "https://drive.google.com/drive/folders/1b-L2Q8ItT21Mvsh8PfjK5USMPnNovANU",
+        'funny-clips-bundle': "https://drive.google.com/drive/folders/1QREdguUC-VAZ-Me_kPbbJ1u3xjc-jf6K",
+        'monkey-vlogs-bundle': "https://drive.google.com/drive/u/0/mobile/folders/1_JHEY5mmiMijvekAqTzbC5dENmoC6F11",
+        'ai-news-bundle': "https://drive.google.com/drive/folders/1fS_qaVAubPNKODfsIrlh1DvHTRFiO0ZD",
+        'ai-cat-story-bundle': "https://drive.google.com/drive/folders/1l-SosSdRxmkfTuVG6X5zwbBr03mmDfrY"
     };
 
     // Helper: Mark button as owned
@@ -85,7 +110,7 @@ export function initPayment() {
                 "amount": amount,
                 "currency": "INR",
                 "name": "MoneyOS",
-                "description": product === 'bundle' ? "Finance + Habit Tracker Bundle" : `${product.charAt(0).toUpperCase() + product.slice(1)} Tracker`,
+                "description": product === 'ai-videos' ? "30K+ AI Videos Library" : product === 'bundle' ? "Finance + Habit Tracker Bundle" : `${product.charAt(0).toUpperCase() + product.slice(1)} Tracker`,
                 "image": "/logo.png", // Use logo
                 "handler": function (response) {
                     // Update Local Storage
